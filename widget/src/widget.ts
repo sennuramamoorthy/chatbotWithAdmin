@@ -49,6 +49,8 @@ const STYLE = `
   .tk-input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 8px; }
   .tk-send { background: #1f4e8c; color: #fff; border: none; border-radius: 8px; padding: 8px 12px; cursor: pointer; }
   .tk-lead { padding: 12px; overflow-y: auto; gap: 8px; }
+  .tk-lead-back { align-self: flex-start; background: none; border: none; color: #1f4e8c; font: inherit; cursor: pointer; padding: 2px 0; }
+  .tk-lead-back:hover { text-decoration: underline; }
   .tk-lead label { font-size: 13px; display: block; margin-top: 6px; }
   .tk-lead input, .tk-lead textarea { width: 100%; padding: 7px; border: 1px solid #ccc; border-radius: 6px; }
   .tk-consent-row { display: flex; gap: 8px; align-items: flex-start; margin-top: 10px; font-size: 13px; }
@@ -74,6 +76,11 @@ const SKELETON = `
     </div>
     <div class="tk-lead" hidden></div>
   </section>
+`;
+
+const LEAD_VIEW = `
+  <button class="tk-lead-back" type="button">&#8592; Back to chat</button>
+  <div class="tk-lead-body"></div>
 `;
 
 const LEAD_FORM = `
@@ -200,12 +207,22 @@ export class Widget {
     this.leadDeadEndQuestion = deadEndQuestion;
     this.chat.hidden = true;
     this.leadView.hidden = false;
-    this.leadView.innerHTML = LEAD_FORM;
-    this.leadView.querySelector(".tk-lead-form")!.addEventListener("submit", (e) => {
+    this.leadView.innerHTML = LEAD_VIEW;
+    this.leadView.querySelector(".tk-lead-back")!.addEventListener("click", () => this.backToChat());
+
+    const body = this.leadView.querySelector(".tk-lead-body")!;
+    body.innerHTML = LEAD_FORM;
+    body.querySelector(".tk-lead-form")!.addEventListener("submit", (e) => {
       e.preventDefault();
       void this.submitLead();
     });
     (this.leadView.querySelector("[name=name]") as HTMLInputElement).focus();
+  }
+
+  /** Leave the lead form and return to the conversation. */
+  backToChat(): void {
+    this.showChat();
+    this.input.focus();
   }
 
   async submitLead(): Promise<void> {
@@ -235,7 +252,9 @@ export class Widget {
     });
 
     if (result.ok) {
-      this.leadView.innerHTML = `<p class="tk-confirm">Thank you — the Admissions team will be in touch soon.</p>`;
+      // Replace only the body so the "Back to chat" control stays available.
+      (this.leadView.querySelector(".tk-lead-body") as HTMLElement).innerHTML =
+        `<p class="tk-confirm">Thank you — the Admissions team will be in touch soon.</p>`;
       return;
     }
 

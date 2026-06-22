@@ -214,6 +214,34 @@ describe("Widget lead capture", () => {
     expect(client.leads).toHaveLength(1);
   });
 
+  it("returns to chat from the lead form via the Back button", () => {
+    const w = mount(new FakeClient());
+    w.open();
+    q(w, ".tk-lead-btn").click(); // open the lead form
+    expect(q(w, ".tk-chat").hidden).toBe(true);
+    expect(input(w, "name")).toBeTruthy();
+
+    q(w, ".tk-lead-back").click(); // go back
+    expect(q(w, ".tk-chat").hidden).toBe(false);
+    expect(q(w, ".tk-lead").hidden).toBe(true);
+    expect(q(w, ".tk-input")).toBeTruthy(); // composer is usable again
+  });
+
+  it("keeps a way back to chat after the lead is submitted", async () => {
+    const client = new FakeClient();
+    const w = mount(client);
+    w.open();
+    w.openLeadForm();
+    input(w, "name").value = "Asha";
+    input(w, "email").value = "a@b.co";
+    input(w, "consent").checked = true;
+    await w.submitLead();
+    expect(w.root.querySelector(".tk-confirm")).toBeTruthy();
+
+    q(w, ".tk-lead-back").click(); // back button persists on the confirmation
+    expect(q(w, ".tk-chat").hidden).toBe(false);
+  });
+
   it("carries the dead-end question into the lead payload", async () => {
     const client = new FakeClient();
     client.streamImpl = (cb) => cb.onDone({ outcome: "dead_end", offer_lead: true });

@@ -25,8 +25,8 @@ retrieves grounded content and phrases facts it is handed. See the design doc.
 ## What's built so far
 
 Test-first (TDD), **100% covered** — **248 backend tests** (+ 1 opt-in real-Postgres)
-**plus 41 widget + 64 admin-UI** unit tests and **5 Playwright E2E** specs that pass in
-real Chromium = **358 tests**. The full learning loop runs via `make run` — ask an
+**plus 43 widget + 64 admin-UI** unit tests and **5 Playwright E2E** specs that pass in
+real Chromium = **360 tests**. The full learning loop runs via `make run` — ask an
 unanswerable question → it's a dead-end → admin publishes content → the bot answers.
 Production wiring (real adapters) is verified against a live Postgres; the widget is
 verified end-to-end (streaming, soft-fail, axe accessibility) in a real browser.
@@ -225,7 +225,7 @@ DATABASE_URL=... LLM_BASE_URL=... make worker   # background clustering + retent
 ```bash
 cd widget
 npm install
-npm test           # 39 Vitest tests (jsdom)
+npm test           # 43 Vitest tests (jsdom)
 npm run build      # -> dist/widget.js (single CDN bundle)
 # manual preview: serve this dir and open index.html with `make run` going
 ```
