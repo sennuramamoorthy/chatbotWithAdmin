@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Takshashila University — widget demo</title>
+    <style>
+      body { font-family: system-ui, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; color: #222; }
+    </style>
+  </head>
+  <body>
+    <h1>Takshashila University</h1>
+    <p>
+      This is a host page. The chat widget loads from a single script tag below and
+      appears as a collapsed bubble in the corner — it must not hijack this page.
+    </p>
+    <p>Run the backend first (<code>make run</code> in the repo root), then open this file.</p>
+
+    <!-- The single embed snippet. Build it with: npm run build -->
+    <script
+      src="./dist/widget.js"
+      data-base-url="http://127.0.0.1:8000"
+      data-contact-email="admissions@takshashila.example"
+      data-contact-phone="+91-99999-00000"
+      data-contact-page="https://takshashila.example/admissions"
+    ></script>
+  </body>
+</html>

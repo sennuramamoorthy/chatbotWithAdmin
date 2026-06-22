@@ -1,0 +1,47 @@
+# Local development infrastructure for the Takshashila chatbot backend.
+#
+# Brings up the datastores the design depends on (see docs/system-design.md §4.1, §5.2):
+#   * Postgres + pgvector — KB content/versions, structured fee/admission dates,
+#     leads, question logs, dead-end clusters, daily stats, AND the vector index.
+#   * Redis — ephemeral session memory, rate-limit counters, cache, task broker.
+#
+# Credentials here are LOCAL-DEV ONLY. The application (FastAPI), worker tier, and
+# self-hosted inference tier (vLLM + embeddings, GPU) are added in later increments.
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: takshashila-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-takshashila}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-takshashila}
+      POSTGRES_DB: ${POSTGRES_DB:-takshashila}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/02-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-takshashila}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: takshashila-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres-data:
+  redis-data:

@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Node / TS build
+node_modules/
+dist/
+
+# Test / coverage artifacts
+test-results/
+playwright-report/
+coverage/
+
+# Env / secrets
+.env
+*.local
+
+# Claude Code local settings (per-user permissions)
+.claude/settings.local.json
+
+# OS / editor
+.DS_Store

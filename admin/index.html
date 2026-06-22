@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Takshashila University — Admissions Console</title>
+    <style>
+      :root { color-scheme: light dark; }
+      body {
+        margin: 0;
+        padding: 28px 20px 64px;
+        background: #eef1f6;
+        color: #0f172a;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      @media (prefers-color-scheme: dark) {
+        body { background: #0b1220; color: #e8edf5; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- AdminApp renders its own header, toolbar, and panels into <body>. -->
+    <!-- Run the backend first (`make run` in the repo root), then open this page. -->
+    <!-- Build it with: npm run build -->
+    <script
+      src="./dist/admin.js"
+      data-base-url="http://127.0.0.1:8000"
+    ></script>
+  </body>
+</html>

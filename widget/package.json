@@ -1,0 +1,25 @@
+{
+  "name": "takshashila-chatbot-widget",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Embeddable chat widget for the Takshashila University chatbot (US-10)",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cov": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "build": "esbuild src/embed.ts --bundle --minify --format=iife --outfile=dist/widget.js",
+    "e2e": "playwright test",
+    "e2e:install": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10",
+    "@playwright/test": "^1.49",
+    "@vitest/coverage-v8": "^2.1.8",
+    "esbuild": "^0.24.2",
+    "jsdom": "^25.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
